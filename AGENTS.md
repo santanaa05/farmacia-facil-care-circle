@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Roles live in `public.user_roles` (enum cliente/atendente/admin), checked via `has_role`/`is_staff` in RLS; the first signup becomes admin. Why: avoids privilege escalation.
+- Orders are created only through the `place_order` RPC, which reads prices and stock server-side. Why: clients cannot set prices.
