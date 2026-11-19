@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ProductCard } from "@/components/ProductCard";
+import { CatalogCarousel } from "@/components/CatalogCarousel";
 import { useOfferCountdown } from "@/components/QuickAccessBar";
 import { productsQuery } from "@/lib/products";
 import { CATEGORY_DETAILS } from "@/lib/categories";
@@ -132,9 +132,7 @@ function Produtos() {
           </Link>
         </div>
 
-        {isLoading ? <p className="mt-6">Carregando...</p> : (
-          <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">{list.map((p) => <ProductCard key={p.id} p={p} />)}</div>
-        )}
+        {isLoading ? <p className="mt-6">Carregando...</p> : <CatalogCarousel products={list} />}
       </div>
     </div>
   );

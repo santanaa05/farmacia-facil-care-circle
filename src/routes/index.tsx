@@ -35,7 +35,7 @@ function Index() {
       <section className="mt-6 overflow-hidden rounded-2xl bg-hero p-8 text-primary-foreground md:p-14">
         <p className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">SEMANA DA SAÚDE</p>
         <h1 className="mt-4 max-w-xl text-4xl font-extrabold leading-tight md:text-5xl">Até 40% off em vitaminas e dermocosméticos</h1>
-        <p className="mt-3 max-w-md opacity-90">Cuide de você com quem entende. Entrega em até 2 horas na sua região.</p>
+        <p className="mt-3 max-w-md opacity-90">Cuide de você com quem entende. Consulte o prazo de entrega pelo seu CEP.</p>
         <Button asChild size="lg" variant="secondary" className="mt-6"><Link to="/produtos">Ver ofertas</Link></Button>
       </section>
 

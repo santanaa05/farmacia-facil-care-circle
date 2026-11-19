@@ -11,3 +11,7 @@
 - [x] Ampliar o catálogo com 12 novos produtos e ranking de compras
 - [x] Melhorar o visual e a navegação das categorias
 - [x] Melhorar as abas das áreas Cliente, Atendente e Admin
+- [ ] Transformar o catálogo de produtos em carrossel horizontal
+- [ ] Refazer atalhos rápidos e deixar as categorias compactas
+- [ ] Adicionar seleção de CEP com cidade e prazo estimado
+- [ ] Separar os acessos de Cliente e Atendente na página Entrar

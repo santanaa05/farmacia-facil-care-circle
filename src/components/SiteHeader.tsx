@@ -1,9 +1,10 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Search, ShoppingCart, User, Headset, Shield, Cross } from "lucide-react";
+import { Search, ShoppingCart, User, Headset, Shield, Cross, Menu } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { QuickAccessBar } from "@/components/QuickAccessBar";
+import { CepSelector } from "@/components/CepSelector";
 import { useAuth } from "@/lib/auth";
 import { useCart } from "@/lib/cart";
 import { CATEGORY_DETAILS } from "@/lib/categories";
@@ -54,18 +55,19 @@ export function SiteHeader() {
           </div>
         </div>
         <div className="border-b bg-card">
-          <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-2 text-sm font-medium">
+          <div className="mx-auto flex max-w-7xl items-center gap-5 overflow-x-auto px-4 py-2.5 text-sm font-medium">
+            <div className="shrink-0 border-r pr-4"><CepSelector /></div>
+            <Link to="/produtos" className="flex shrink-0 items-center gap-2 whitespace-nowrap font-semibold text-foreground hover:text-primary"><Menu className="h-4 w-4" />Todas as categorias</Link>
             {CATEGORY_DETAILS.map((category) => {
-              const Icon = category.icon;
               const active = currentCategory === category.name;
               return (
                 <Link
                   key={category.name}
                   to="/produtos"
                   search={{ cat: category.name }}
-                  className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 transition ${active ? "bg-secondary font-bold text-primary" : "text-foreground hover:bg-secondary hover:text-primary"}`}
+                  className={`shrink-0 whitespace-nowrap border-b-2 py-1 transition ${active ? "border-primary font-bold text-primary" : "border-transparent text-muted-foreground hover:text-primary"}`}
                 >
-                  <Icon className="h-4 w-4" />{category.name}
+                  {category.name}
                 </Link>
               );
             })}
