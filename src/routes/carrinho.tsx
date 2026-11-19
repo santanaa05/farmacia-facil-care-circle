@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
+import { couponDiscount, couponFor } from "@/lib/coupons";
 import { useAuth } from "@/lib/auth";
 import { couponsQuery } from "@/lib/favorites";
 import { brl, useCart } from "@/lib/cart";
@@ -34,22 +35,20 @@ function Carrinho() {
   const [busy, setBusy] = useState(false);
   const { data: coupons = [] } = useQuery(couponsQuery());
 
-  const typed = coupon.trim().toUpperCase();
-  const applied = typed ? coupons.find((c) => c.active && c.code.toUpperCase() === typed) : undefined;
+  const applied = couponFor(coupon, coupons);
   const min = Number(applied?.min_total ?? 0);
   const usable = !!applied && total >= min;
-  const discount = usable ? Number(((total * Number(applied!.percent)) / 100).toFixed(2)) : 0;
+  const discount = usable ? couponDiscount(total, applied) : 0;
   const finalTotal = Math.max(0, Number((total - discount).toFixed(2)));
 
   const checkout = async () => {
     if (!user) return nav({ to: "/auth" });
     if (!address.trim()) return toast.error("Informe o endereço de entrega");
     setBusy(true);
-    const { error } = await supabase.rpc("place_order", {
-      _items: items.map(({ product_id, quantity }) => ({ product_id, quantity })),
-      _address: address,
-      _coupon: usable ? applied!.code : null,
-    });
+    const items2 = items.map(({ product_id, quantity }) => ({ product_id, quantity }));
+    const { error } = await supabase.rpc("place_order", usable
+      ? { _items: items2, _address: address, _coupon: applied!.code }
+      : { _items: items2, _address: address });
     setBusy(false);
     if (error) return toast.error(error.message);
     clear();
@@ -87,7 +86,7 @@ function Carrinho() {
           <div className="mt-1 flex gap-2">
             <Input id="cupom" value={coupon} onChange={(e) => setCoupon(e.target.value)} placeholder="Ex.: BEMVINDO10" className="h-9 font-mono uppercase" />
           </div>
-          {typed && !applied && <p className="mt-1 text-xs font-semibold text-sale">Cupom inválido ou expirado</p>}
+          {coupon.trim() && !applied && <p className="mt-1 text-xs font-semibold text-sale">Cupom inválido ou expirado</p>}
           {applied && !usable && <p className="mt-1 text-xs font-semibold text-sale">Este cupom exige compra acima de {brl(min)}</p>}
           {usable && applied && <p className="mt-1 text-xs font-semibold text-primary">Cupom {applied.code} aplicado: -{applied.percent}%</p>}
           <Link to="/cupons" className="mt-1 inline-block text-xs font-semibold text-primary">Ver cupons disponíveis</Link>

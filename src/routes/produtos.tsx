@@ -8,7 +8,12 @@ import type { Tables } from "@/integrations/supabase/types";
 type Sort = "buscados" | "desconto" | "preco";
 
 export const Route = createFileRoute("/produtos")({
-  validateSearch: (s: Record<string, unknown>): { q?: string; cat?: string; sort?: Sort; off?: boolean } => ({
+  validateSearch: (s: Record<string, unknown>): {
+    q?: string | undefined;
+    cat?: string | undefined;
+    sort?: Sort | undefined;
+    off?: boolean | undefined;
+  } => ({
     q: typeof s["q"] === "string" ? s["q"] : undefined,
     cat: typeof s["cat"] === "string" ? s["cat"] : undefined,
     sort: s["sort"] === "buscados" || s["sort"] === "desconto" || s["sort"] === "preco" ? s["sort"] : undefined,

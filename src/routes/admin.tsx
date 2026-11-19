@@ -22,7 +22,7 @@ export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
       { title: "Área administrativa — FarmaQuarema" },
-      { name: "description", content: "Área restrita para gerenciar produtos e usuários da FarmaQuarema." },
+      { name: "description", content: "Área restrita para gerenciar produtos, cupons e usuários da FarmaQuarema." },
       { property: "og:title", content: "Área administrativa — FarmaQuarema" },
       { property: "og:description", content: "Área restrita da FarmaQuarema." },
       { property: "og:type", content: "website" },
@@ -32,6 +32,8 @@ export const Route = createFileRoute("/admin")({
   }),
   component: () => <RoleGuard allow={["admin"]}><Admin /></RoleGuard>,
 });
+
+type AppRole = "cliente" | "atendente" | "admin";
 
 const empty = { name: "", brand: "", description: "", price: 0, old_price: null as number | null, stock: 10, category: "Medicamentos", requires_prescription: false, image_url: "" };
 const emptyCoupon = { code: "", description: "", percent: 10, min_total: 0, active: true };
@@ -55,9 +57,13 @@ function Admin() {
   const { data: users = [] } = useQuery({
     queryKey: ["admin-users"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("profiles").select("id, full_name, phone, user_roles(role)");
+      const { data, error } = await supabase.from("profiles").select("id, full_name, phone");
       if (error) throw error;
-      return data;
+      const { data: roles, error: rolesError } = await supabase.from("user_roles").select("user_id, role");
+      if (rolesError) throw rolesError;
+      const byUser = new Map<string, AppRole>();
+      (roles ?? []).forEach((r) => byUser.set(r.user_id, r.role));
+      return (data ?? []).map((p) => ({ ...p, role: byUser.get(p.id) }));
     },
   });
 
@@ -76,7 +82,10 @@ function Admin() {
     const { error } = origId
       ? await supabase.from("products").update(payload).eq("id", origId)
       : await supabase.from("products").insert(payload);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Produto salvo");
     setProd(null); setOrigId(null);
     qc.invalidateQueries({ queryKey: ["admin-products"] });
@@ -85,17 +94,26 @@ function Admin() {
 
   const remove = async (id: string) => {
     const { error } = await supabase.from("products").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Produto removido");
     qc.invalidateQueries({ queryKey: ["admin-products"] });
     qc.invalidateQueries({ queryKey: ["products"] });
   };
 
-  const setRole = async (userId: string, role: "cliente" | "atendente" | "admin") => {
+  const setRole = async (userId: string, role: AppRole) => {
     const { error } = await supabase.from("user_roles").delete().eq("user_id", userId);
-    if (error) return toast.error(error.message);
-    const { error: err2 } = await supabase.from("user_roles").insert({ user_id: userId, role });
-    if (err2) return toast.error(err2.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    const { error: insertError } = await supabase.from("user_roles").insert({ user_id: userId, role });
+    if (insertError) {
+      toast.error(insertError.message);
+      return;
+    }
     toast.success("Perfil atualizado");
     qc.invalidateQueries({ queryKey: ["admin-users"] });
   };
@@ -103,12 +121,18 @@ function Admin() {
   const saveCoupon = async () => {
     if (!coupon) return;
     const code = coupon.code.trim().toUpperCase();
-    if (!code) return toast.error("Informe o código do cupom");
+    if (!code) {
+      toast.error("Informe o código do cupom");
+      return;
+    }
     const payload = { ...coupon, code, description: coupon.description.trim() || `Cupom ${code}` };
     const { error } = origCode
       ? await supabase.from("coupons").update(payload).eq("code", origCode)
       : await supabase.from("coupons").insert(payload);
-    if (error) return toast.error(error.code === "23505" ? "Já existe um cupom com esse código" : error.message);
+    if (error) {
+      toast.error(error.code === "23505" ? "Já existe um cupom com esse código" : error.message);
+      return;
+    }
     toast.success("Cupom salvo");
     setCoupon(null); setOrigCode(null);
     qc.invalidateQueries({ queryKey: ["coupons"] });
@@ -116,14 +140,20 @@ function Admin() {
 
   const removeCoupon = async (code: string) => {
     const { error } = await supabase.from("coupons").delete().eq("code", code);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Cupom removido");
     qc.invalidateQueries({ queryKey: ["coupons"] });
   };
 
   const toggleCoupon = async (c: Tables<"coupons">) => {
     const { error } = await supabase.from("coupons").update({ active: !c.active }).eq("code", c.code);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast(c.active ? "Cupom desativado" : "Cupom ativado");
     qc.invalidateQueries({ queryKey: ["coupons"] });
   };
@@ -166,24 +196,21 @@ function Admin() {
             <Table>
               <TableHeader><TableRow><TableHead>Nome</TableHead><TableHead>Perfil</TableHead></TableRow></TableHeader>
               <TableBody>
-                {users.map((u) => {
-                  const current = (u.user_roles as { role: string }[])[0]?.role as "cliente" | "atendente" | "admin" | undefined;
-                  return (
-                    <TableRow key={u.id}>
-                      <TableCell>{u.full_name || u.id.slice(0, 8)}</TableCell>
-                      <TableCell>
-                        <Select value={current} onValueChange={(v) => setRole(u.id, v as "cliente" | "atendente" | "admin")}>
-                          <SelectTrigger className="w-40"><SelectValue placeholder="Selecionar" /></SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="cliente">Cliente</SelectItem>
-                            <SelectItem value="atendente">Atendente</SelectItem>
-                            <SelectItem value="admin">Admin</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                {users.map((u) => (
+                  <TableRow key={u.id}>
+                    <TableCell>{u.full_name || u.id.slice(0, 8)}</TableCell>
+                    <TableCell>
+                      <Select value={u.role ?? ""} onValueChange={(v) => setRole(u.id, v as AppRole)}>
+                        <SelectTrigger className="w-40"><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="cliente">Cliente</SelectItem>
+                          <SelectItem value="atendente">Atendente</SelectItem>
+                          <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>
