@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Truck, Store, ShieldCheck, Percent } from "lucide-react";
+import { Truck, Store, ShieldCheck, Percent, Zap, Medal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
+import { useOfferCountdown } from "@/components/QuickAccessBar";
 import { productsQuery, CATEGORIES } from "@/lib/products";
+import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,9 +21,15 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const offPercent = (p: Tables<"products">) => (p.old_price ? 1 - Number(p.price) / Number(p.old_price) : 0);
+
 function Index() {
   const { data = [] } = useQuery(productsQuery());
+  const left = useOfferCountdown();
   const offers = data.filter((p) => p.old_price).slice(0, 8);
+  const flash = [...data].filter((p) => p.old_price).sort((a, b) => offPercent(b) - offPercent(a)).slice(0, 4);
+  const popular = [...data].sort((a, b) => b.popularity - a.popularity).slice(0, 4);
+
   return (
     <div className="mx-auto max-w-7xl px-4">
       <section className="mt-6 overflow-hidden rounded-2xl bg-hero p-8 text-primary-foreground md:p-14">
@@ -36,6 +44,27 @@ function Index() {
           const Icon = I as typeof Truck;
           return <div key={t as string} className="flex items-center gap-3 rounded-xl border bg-card p-4"><Icon className="h-6 w-6 text-primary" /><span className="text-sm font-semibold">{t as string}</span></div>;
         })}
+      </section>
+
+      <section className="mt-10">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="flex items-center gap-2 text-2xl font-extrabold"><Zap className="h-6 w-6 text-spark" />Oferta relâmpago</h2>
+            <p className="mt-1 inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-semibold text-ink-foreground">
+              Aproveite agora! Termina em <span className="font-mono tabular-nums">{left ?? "--h --m --s"}</span>
+            </p>
+          </div>
+          <Link to="/produtos" search={{ sort: "desconto", off: true }} className="text-sm font-semibold text-primary">Ver todas</Link>
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">{flash.map((p) => <ProductCard key={p.id} p={p} />)}</div>
+      </section>
+
+      <section className="mt-10">
+        <div className="flex items-end justify-between">
+          <h2 className="flex items-center gap-2 text-2xl font-extrabold"><Medal className="h-6 w-6 text-spark" />Mais buscados</h2>
+          <Link to="/produtos" search={{ sort: "buscados" }} className="text-sm font-semibold text-primary">Ver todos</Link>
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">{popular.map((p) => <ProductCard key={p.id} p={p} />)}</div>
       </section>
 
       <section className="mt-10">

@@ -14,6 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      coupons: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          description: string
+          min_total: number
+          percent: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          description: string
+          min_total?: number
+          percent: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          description?: string
+          min_total?: number
+          percent?: number
+        }
+        Relationships: []
+      }
+      favorites: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           id: string
@@ -52,6 +108,7 @@ export type Database = {
       orders: {
         Row: {
           address: string | null
+          coupon_code: string | null
           created_at: string
           id: string
           status: string
@@ -60,6 +117,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          coupon_code?: string | null
           created_at?: string
           id?: string
           status?: string
@@ -68,6 +126,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          coupon_code?: string | null
           created_at?: string
           id?: string
           status?: string
@@ -86,6 +145,7 @@ export type Database = {
           image_url: string | null
           name: string
           old_price: number | null
+          popularity: number
           price: number
           requires_prescription: boolean
           stock: number
@@ -99,6 +159,7 @@ export type Database = {
           image_url?: string | null
           name: string
           old_price?: number | null
+          popularity?: number
           price?: number
           requires_prescription?: boolean
           stock?: number
@@ -112,6 +173,7 @@ export type Database = {
           image_url?: string | null
           name?: string
           old_price?: number | null
+          popularity?: number
           price?: number
           requires_prescription?: boolean
           stock?: number
@@ -173,7 +235,10 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
-      place_order: { Args: { _address: string; _items: Json }; Returns: string }
+      place_order: {
+        Args: { _address: string; _coupon?: string; _items: Json }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "cliente" | "atendente" | "admin"

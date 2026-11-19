@@ -44,6 +44,7 @@ function Conta() {
               <OrderBadge status={o.status} />
             </div>
             <ul className="mt-2 text-sm text-muted-foreground">{o.order_items.map((i) => <li key={i.id}>{i.quantity}x {i.name}</li>)}</ul>
+            {o.coupon_code && <p className="mt-1 text-xs font-semibold text-primary">Cupom {o.coupon_code} aplicado</p>}
             <p className="mt-2 font-bold text-primary-deep">{brl(Number(o.total))}</p>
           </div>
         ))}

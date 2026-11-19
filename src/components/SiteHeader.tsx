@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Search, ShoppingCart, User, Headset, Shield, Cross } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { QuickAccessBar } from "@/components/QuickAccessBar";
 import { useAuth } from "@/lib/auth";
 import { useCart } from "@/lib/cart";
 import { CATEGORIES } from "@/lib/products";
@@ -13,50 +14,53 @@ export function SiteHeader() {
   const nav = useNavigate();
   const [q, setQ] = useState("");
   return (
-    <header className="sticky top-0 z-40 shadow-card">
+    <header className="shadow-card">
       <div className="bg-primary-deep py-1.5 text-center text-xs text-primary-foreground">
         Frete grátis acima de R$ 99 · Retire na loja em 1 hora
       </div>
-      <div className="bg-primary text-primary-foreground">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
-          <Link to="/" className="flex shrink-0 items-center gap-2 text-xl font-extrabold">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground"><Cross className="h-5 w-5" /></span>
-            FarmaQuarema
-          </Link>
-          <form className="relative flex-1" onSubmit={(e) => { e.preventDefault(); nav({ to: "/produtos", search: { q: q || undefined } }); }}>
-            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busque por remédio, marca ou sintoma"
-              className="h-11 rounded-full border-0 bg-card pl-4 pr-10 text-foreground" />
-            <Search className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-          </form>
-          <nav className="flex items-center gap-1 text-sm">
-            {roles.includes("atendente") || roles.includes("admin") ? (
-              <Link to="/atendente" className="hidden items-center gap-1 rounded-md px-2 py-1 hover:bg-primary-deep md:flex"><Headset className="h-4 w-4" />Atendimento</Link>
-            ) : null}
-            {roles.includes("admin") && (
-              <Link to="/admin" className="hidden items-center gap-1 rounded-md px-2 py-1 hover:bg-primary-deep md:flex"><Shield className="h-4 w-4" />Admin</Link>
-            )}
-            {user ? (
-              <>
-                <Link to="/conta" className="flex items-center gap-1 rounded-md px-2 py-1 hover:bg-primary-deep"><User className="h-4 w-4" /><span className="hidden sm:inline">Minha conta</span></Link>
-                <Button size="sm" variant="ghost" className="hidden hover:bg-primary-deep hover:text-primary-foreground sm:inline-flex" onClick={signOut}>Sair</Button>
-              </>
-            ) : (
-              <Link to="/auth" className="flex items-center gap-1 rounded-md px-2 py-1 hover:bg-primary-deep"><User className="h-4 w-4" />Entrar</Link>
-            )}
-            <Link to="/carrinho" className="relative flex items-center rounded-md px-2 py-1 hover:bg-primary-deep">
-              <ShoppingCart className="h-6 w-6" />
-              {count > 0 && <span className="absolute -right-1 -top-1 rounded-full bg-accent px-1.5 text-xs font-bold text-accent-foreground">{count}</span>}
+      <div className="sticky top-0 z-40">
+        <div className="bg-primary text-primary-foreground">
+          <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
+            <Link to="/" className="flex shrink-0 items-center gap-2 text-xl font-extrabold">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground"><Cross className="h-5 w-5" /></span>
+              FarmaQuarema
             </Link>
-          </nav>
+            <form className="relative flex-1" onSubmit={(e) => { e.preventDefault(); nav({ to: "/produtos", search: { q: q || undefined } }); }}>
+              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busque por remédio, marca ou sintoma"
+                className="h-11 rounded-full border-0 bg-card pl-4 pr-10 text-foreground" />
+              <Search className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
+            </form>
+            <nav className="flex items-center gap-1 text-sm">
+              {roles.includes("atendente") || roles.includes("admin") ? (
+                <Link to="/atendente" className="hidden items-center gap-1 rounded-md px-2 py-1 hover:bg-primary-deep md:flex"><Headset className="h-4 w-4" />Atendimento</Link>
+              ) : null}
+              {roles.includes("admin") && (
+                <Link to="/admin" className="hidden items-center gap-1 rounded-md px-2 py-1 hover:bg-primary-deep md:flex"><Shield className="h-4 w-4" />Admin</Link>
+              )}
+              {user ? (
+                <>
+                  <Link to="/conta" className="flex items-center gap-1 rounded-md px-2 py-1 hover:bg-primary-deep"><User className="h-4 w-4" /><span className="hidden sm:inline">Minha conta</span></Link>
+                  <Button size="sm" variant="ghost" className="hidden hover:bg-primary-deep hover:text-primary-foreground sm:inline-flex" onClick={signOut}>Sair</Button>
+                </>
+              ) : (
+                <Link to="/auth" className="flex items-center gap-1 rounded-md px-2 py-1 hover:bg-primary-deep"><User className="h-4 w-4" />Entrar</Link>
+              )}
+              <Link to="/carrinho" className="relative flex items-center rounded-md px-2 py-1 hover:bg-primary-deep">
+                <ShoppingCart className="h-6 w-6" />
+                {count > 0 && <span className="absolute -right-1 -top-1 rounded-full bg-accent px-1.5 text-xs font-bold text-accent-foreground">{count}</span>}
+              </Link>
+            </nav>
+          </div>
+        </div>
+        <div className="border-b bg-card">
+          <div className="mx-auto flex max-w-7xl gap-6 overflow-x-auto px-4 py-2 text-sm font-medium">
+            {CATEGORIES.map((c) => (
+              <Link key={c} to="/produtos" search={{ cat: c }} className="whitespace-nowrap text-foreground hover:text-primary">{c}</Link>
+            ))}
+          </div>
         </div>
       </div>
-      <div className="border-b bg-card">
-        <div className="mx-auto flex max-w-7xl gap-6 overflow-x-auto px-4 py-2 text-sm font-medium">
-          {CATEGORIES.map((c) => (
-            <Link key={c} to="/produtos" search={{ cat: c }} className="whitespace-nowrap text-foreground hover:text-primary">{c}</Link>
-          ))}
-        </div>
-      </div>
+      <QuickAccessBar />
     </header>
   );
 }
