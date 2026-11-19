@@ -6,3 +6,8 @@
 - [x] Página de salvos + coração nos produtos
 - [x] Página de cupons (código aplicado no carrinho) e página de serviços/vacinas
 - [x] Barra "mais buscados" e vitrine de oferta relâmpago na home
+- [x] Vitrine horizontal com abas Mais vistos, Mais comprados e Ofertas da semana
+- [x] Fotos realistas para os novos produtos
+- [x] Ampliar o catálogo com 12 novos produtos e ranking de compras
+- [x] Melhorar o visual e a navegação das categorias
+- [x] Melhorar as abas das áreas Cliente, Atendente e Admin

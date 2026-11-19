@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Search, ShoppingCart, User, Headset, Shield, Cross } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { QuickAccessBar } from "@/components/QuickAccessBar";
 import { useAuth } from "@/lib/auth";
 import { useCart } from "@/lib/cart";
-import { CATEGORIES } from "@/lib/products";
+import { CATEGORY_DETAILS } from "@/lib/categories";
 
 export function SiteHeader() {
   const { user, roles, signOut } = useAuth();
   const { count } = useCart();
   const nav = useNavigate();
   const [q, setQ] = useState("");
+  const currentCategory = useLocation({ select: (location) => (location.search as { cat?: string }).cat });
   return (
     <header className="shadow-card">
       <div className="bg-primary-deep py-1.5 text-center text-xs text-primary-foreground">
@@ -53,10 +54,21 @@ export function SiteHeader() {
           </div>
         </div>
         <div className="border-b bg-card">
-          <div className="mx-auto flex max-w-7xl gap-6 overflow-x-auto px-4 py-2 text-sm font-medium">
-            {CATEGORIES.map((c) => (
-              <Link key={c} to="/produtos" search={{ cat: c }} className="whitespace-nowrap text-foreground hover:text-primary">{c}</Link>
-            ))}
+          <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-2 text-sm font-medium">
+            {CATEGORY_DETAILS.map((category) => {
+              const Icon = category.icon;
+              const active = currentCategory === category.name;
+              return (
+                <Link
+                  key={category.name}
+                  to="/produtos"
+                  search={{ cat: category.name }}
+                  className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 transition ${active ? "bg-secondary font-bold text-primary" : "text-foreground hover:bg-secondary hover:text-primary"}`}
+                >
+                  <Icon className="h-4 w-4" />{category.name}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

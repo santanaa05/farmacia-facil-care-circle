@@ -1,7 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { CATEGORY_DETAILS } from "@/lib/categories";
 
-export const CATEGORIES = ["Medicamentos", "Vitaminas", "Dermocosméticos", "Higiene", "Infantil", "Saúde"];
+export const CATEGORIES = CATEGORY_DETAILS.map((category) => category.name);
 export const productsQuery = () =>
   queryOptions({
     queryKey: ["products"],

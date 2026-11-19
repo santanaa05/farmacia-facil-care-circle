@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Truck, Store, ShieldCheck, Percent, Zap, Medal } from "lucide-react";
+import { Truck, Store, ShieldCheck, Percent, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductTabs } from "@/components/ProductTabs";
+import { CategoryGrid } from "@/components/CategoryGrid";
 import { useOfferCountdown } from "@/components/QuickAccessBar";
-import { productsQuery, CATEGORIES } from "@/lib/products";
+import { productsQuery } from "@/lib/products";
 import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/")({
@@ -26,9 +28,7 @@ const offPercent = (p: Tables<"products">) => (p.old_price ? 1 - Number(p.price)
 function Index() {
   const { data = [] } = useQuery(productsQuery());
   const left = useOfferCountdown();
-  const offers = data.filter((p) => p.old_price).slice(0, 8);
   const flash = [...data].filter((p) => p.old_price).sort((a, b) => offPercent(b) - offPercent(a)).slice(0, 4);
-  const popular = [...data].sort((a, b) => b.popularity - a.popularity).slice(0, 4);
 
   return (
     <div className="mx-auto max-w-7xl px-4">
@@ -59,27 +59,10 @@ function Index() {
         <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">{flash.map((p) => <ProductCard key={p.id} p={p} />)}</div>
       </section>
 
-      <section className="mt-10">
-        <div className="flex items-end justify-between">
-          <h2 className="flex items-center gap-2 text-2xl font-extrabold"><Medal className="h-6 w-6 text-spark" />Mais buscados</h2>
-          <Link to="/produtos" search={{ sort: "buscados" }} className="text-sm font-semibold text-primary">Ver todos</Link>
-        </div>
-        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">{popular.map((p) => <ProductCard key={p.id} p={p} />)}</div>
-      </section>
+      <ProductTabs products={data} />
 
-      <section className="mt-10">
-        <h2 className="text-2xl font-extrabold">Categorias</h2>
-        <div className="mt-4 grid grid-cols-3 gap-3 md:grid-cols-6">
-          {CATEGORIES.map((c) => (
-            <Link key={c} to="/produtos" search={{ cat: c }} className="rounded-xl bg-secondary p-4 text-center text-sm font-semibold text-secondary-foreground transition hover:bg-primary hover:text-primary-foreground">{c}</Link>
-          ))}
-        </div>
-      </section>
+      <CategoryGrid products={data} />
 
-      <section className="mt-10">
-        <div className="flex items-end justify-between"><h2 className="text-2xl font-extrabold">Ofertas imperdíveis</h2><Link to="/produtos" className="text-sm font-semibold text-primary">Ver todas</Link></div>
-        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">{offers.map((p) => <ProductCard key={p.id} p={p} />)}</div>
-      </section>
     </div>
   );
 }

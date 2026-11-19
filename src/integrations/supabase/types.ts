@@ -148,6 +148,7 @@ export type Database = {
           popularity: number
           price: number
           requires_prescription: boolean
+          sales_count: number
           stock: number
         }
         Insert: {
@@ -162,6 +163,7 @@ export type Database = {
           popularity?: number
           price?: number
           requires_prescription?: boolean
+          sales_count?: number
           stock?: number
         }
         Update: {
@@ -176,6 +178,7 @@ export type Database = {
           popularity?: number
           price?: number
           requires_prescription?: boolean
+          sales_count?: number
           stock?: number
         }
         Relationships: []

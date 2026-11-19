@@ -14,9 +14,9 @@ export function ProductCard({ p }: { p: Tables<"products"> }) {
   const off = p.old_price ? Math.round((1 - Number(p.price) / Number(p.old_price)) * 100) : 0;
   const saved = isFav(p.id);
   return (
-    <div className="group flex flex-col rounded-xl border bg-card p-4 shadow-card transition hover:-translate-y-0.5">
+    <div className="group flex h-full flex-col rounded-xl border bg-card p-4 shadow-card transition hover:-translate-y-0.5">
       <div className="relative mb-3 flex aspect-square items-center justify-center rounded-lg bg-secondary">
-        {p.image_url ? <img src={p.image_url} alt={p.name} className="h-full w-full rounded-lg object-cover" /> : <Icon className="h-16 w-16 text-primary" strokeWidth={1.4} />}
+        {p.image_url ? <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full rounded-lg object-contain p-2 transition duration-300 group-hover:scale-[1.03]" /> : <Icon className="h-16 w-16 text-primary" strokeWidth={1.4} />}
         {off > 0 && <span className="absolute left-2 top-2 rounded-full bg-sale px-2 py-0.5 text-xs font-bold text-sale-foreground">-{off}%</span>}
         <button
           type="button"
