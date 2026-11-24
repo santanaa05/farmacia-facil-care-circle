@@ -135,6 +135,30 @@ export type Database = {
         }
         Relationships: []
       }
+      pharmacy_units: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          number: number
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          number: number
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          number?: number
+          status?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           brand: string | null
@@ -207,6 +231,122 @@ export type Database = {
         }
         Relationships: []
       }
+      stock_movements: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          kind: string
+          note: string | null
+          quantity: number
+          stock_id: string
+          unit_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind: string
+          note?: string | null
+          quantity: number
+          stock_id: string
+          unit_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          note?: string | null
+          quantity?: number
+          stock_id?: string
+          unit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_stock_id_fkey"
+            columns: ["stock_id"]
+            isOneToOne: false
+            referencedRelation: "unit_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "pharmacy_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      unit_stock: {
+        Row: {
+          category: string
+          created_at: string
+          daily_sales: number
+          expiry_date: string | null
+          id: string
+          is_demo: boolean
+          last_movement_at: string | null
+          lead_time_days: number
+          manufacturer: string | null
+          max_quantity: number | null
+          min_quantity: number
+          name: string
+          product_code: string
+          quantity: number
+          supplier: string | null
+          unit_cost: number
+          unit_id: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          daily_sales?: number
+          expiry_date?: string | null
+          id?: string
+          is_demo?: boolean
+          last_movement_at?: string | null
+          lead_time_days?: number
+          manufacturer?: string | null
+          max_quantity?: number | null
+          min_quantity?: number
+          name: string
+          product_code: string
+          quantity?: number
+          supplier?: string | null
+          unit_cost?: number
+          unit_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          daily_sales?: number
+          expiry_date?: string | null
+          id?: string
+          is_demo?: boolean
+          last_movement_at?: string | null
+          lead_time_days?: number
+          manufacturer?: string | null
+          max_quantity?: number | null
+          min_quantity?: number
+          name?: string
+          product_code?: string
+          quantity?: number
+          supplier?: string | null
+          unit_cost?: number
+          unit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "unit_stock_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "pharmacy_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -242,6 +382,7 @@ export type Database = {
         Args: { _address: string; _coupon?: string; _items: Json }
         Returns: string
       }
+      stock_snapshot: { Args: { _unit_number?: number }; Returns: Json }
     }
     Enums: {
       app_role: "cliente" | "atendente" | "admin"
