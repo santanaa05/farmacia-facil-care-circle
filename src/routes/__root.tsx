@@ -85,9 +85,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FarmaQuarema — Farmácia online" },
+      { title: "FarmaQuaresma — Farmácia online" },
       { name: "description", content: "Medicamentos, vitaminas e dermocosméticos com entrega rápida." },
-      { property: "og:title", content: "FarmaQuarema — Farmácia online" },
+      { property: "og:title", content: "FarmaQuaresma — Farmácia online" },
       { property: "og:description", content: "Medicamentos, vitaminas e dermocosméticos com entrega rápida." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

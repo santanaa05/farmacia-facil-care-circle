@@ -22,9 +22,9 @@ export const Route = createFileRoute("/produtos")({
   }),
   head: () => ({
     meta: [
-      { title: "Produtos — FarmaQuarema" },
-      { name: "description", content: "Todos os medicamentos, vitaminas e produtos de saúde da FarmaQuarema." },
-      { property: "og:title", content: "Produtos — FarmaQuarema" },
+      { title: "Produtos — FarmaQuaresma" },
+      { name: "description", content: "Todos os medicamentos, vitaminas e produtos de saúde da FarmaQuaresma." },
+      { property: "og:title", content: "Produtos — FarmaQuaresma" },
       { property: "og:description", content: "Medicamentos, vitaminas e produtos de saúde." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

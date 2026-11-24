@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { Minus, Plus, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { couponDiscount, couponFor } from "@/lib/coupons";
 import { useAuth } from "@/lib/auth";
@@ -15,10 +14,10 @@ import { brl, useCart } from "@/lib/cart";
 export const Route = createFileRoute("/carrinho")({
   head: () => ({
     meta: [
-      { title: "Carrinho — FarmaQuarema" },
+      { title: "Carrinho — FarmaQuaresma" },
       { name: "description", content: "Revise seus produtos, aplique um cupom e finalize a compra." },
-      { property: "og:title", content: "Carrinho — FarmaQuarema" },
-      { property: "og:description", content: "Finalize sua compra na FarmaQuarema." },
+      { property: "og:title", content: "Carrinho — FarmaQuaresma" },
+      { property: "og:description", content: "Finalize sua compra na FarmaQuaresma." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -30,7 +29,25 @@ function Carrinho() {
   const { items, setQty, total, clear } = useCart();
   const { user } = useAuth();
   const nav = useNavigate();
-  const [address, setAddress] = useState("");
+  const [cep, setCep] = useState("");
+  const [place, setPlace] = useState("");
+  const [cepBusy, setCepBusy] = useState(false);
+  const cepDigits = cep.replace(/\D/g, "");
+  const address = place ? `CEP ${cep} — ${place}` : "";
+  const changeCep = async (value: string) => {
+    const d = value.replace(/\D/g, "").slice(0, 8);
+    setCep(d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d);
+    setPlace("");
+    if (d.length !== 8) return;
+    setCepBusy(true);
+    try {
+      const r = await fetch(`https://viacep.com.br/ws/${d}/json/`);
+      const j = await r.json() as { erro?: boolean; logradouro?: string; bairro?: string; localidade?: string; uf?: string };
+      if (j.erro || !j.localidade) toast.error("CEP não encontrado");
+      else setPlace([j.logradouro, j.bairro, `${j.localidade}/${j.uf}`].filter(Boolean).join(", "));
+    } catch { toast.error("Não foi possível consultar o CEP"); }
+    finally { setCepBusy(false); }
+  };
   const [coupon, setCoupon] = useState("");
   const [busy, setBusy] = useState(false);
   const { data: coupons = [] } = useQuery(couponsQuery());
@@ -43,7 +60,7 @@ function Carrinho() {
 
   const checkout = async () => {
     if (!user) return nav({ to: "/auth" });
-    if (!address.trim()) return toast.error("Informe o endereço de entrega");
+    if (cepDigits.length !== 8 || !place) return toast.error("Informe um CEP válido");
     setBusy(true);
     const items2 = items.map(({ product_id, quantity }) => ({ product_id, quantity }));
     const { error } = await supabase.rpc("place_order", usable
@@ -96,7 +113,11 @@ function Carrinho() {
           <div className="flex justify-between text-sm text-primary"><span>Desconto</span><span>-{brl(discount)}</span></div>
         )}
         <div className="flex justify-between text-lg"><span>Total</span><span className="font-extrabold text-primary-deep">{brl(finalTotal)}</span></div>
-        <Textarea placeholder="Endereço de entrega" value={address} onChange={(e) => setAddress(e.target.value)} />
+        <div>
+          <Input placeholder="CEP de entrega (00000-000)" inputMode="numeric" autoComplete="postal-code" maxLength={9} value={cep} onChange={(e) => changeCep(e.target.value)} />
+          {cepBusy && <p className="mt-1 text-xs text-muted-foreground">Consultando CEP...</p>}
+          {place && <p className="mt-1 text-xs text-muted-foreground">{place} · 1 a 3 dias úteis</p>}
+        </div>
         <Button className="w-full" size="lg" disabled={busy} onClick={checkout}>{user ? "Finalizar pedido" : "Entrar para finalizar"}</Button>
         <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><Ticket className="h-3 w-3" />O desconto é conferido no servidor ao finalizar.</p>
       </div>

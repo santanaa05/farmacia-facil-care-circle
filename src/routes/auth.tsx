@@ -11,10 +11,10 @@ import { useAuth } from "@/lib/auth";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Entrar — FarmaQuarema" },
-      { name: "description", content: "Entre ou crie sua conta na FarmaQuarema." },
-      { property: "og:title", content: "Entrar — FarmaQuarema" },
-      { property: "og:description", content: "Acesse sua conta FarmaQuarema." },
+      { title: "Entrar — FarmaQuaresma" },
+      { name: "description", content: "Entre ou crie sua conta na FarmaQuaresma." },
+      { property: "og:title", content: "Entrar — FarmaQuaresma" },
+      { property: "og:description", content: "Acesse sua conta FarmaQuaresma." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -79,7 +79,7 @@ function AuthPage() {
 
         <div className="mt-7">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">{access === "cliente" ? "Área do cliente" : "Portal da equipe"}</p>
-          <h1 className="mt-1 text-2xl font-extrabold">{mode === "in" ? "Entrar na FarmaQuarema" : "Criar conta de cliente"}</h1>
+          <h1 className="mt-1 text-2xl font-extrabold">{mode === "in" ? "Entrar na FarmaQuaresma" : "Criar conta de cliente"}</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             {access === "cliente" ? "Acompanhe pedidos, salvos e ofertas na sua conta." : "Use o e-mail e a senha liberados pelo administrador da farmácia."}
           </p>

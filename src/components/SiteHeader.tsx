@@ -25,7 +25,7 @@ export function SiteHeader() {
           <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
             <Link to="/" className="flex shrink-0 items-center gap-2 text-xl font-extrabold">
               <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground"><Cross className="h-5 w-5" /></span>
-              FarmaQuarema
+              FarmaQuaresma
             </Link>
             <form className="relative flex-1" onSubmit={(e) => { e.preventDefault(); nav({ to: "/produtos", search: { q: q || undefined } }); }}>
               <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busque por remédio, marca ou sintoma"
@@ -83,7 +83,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-16 bg-primary-deep text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 text-sm md:grid-cols-3">
-        <div><p className="text-lg font-extrabold">FarmaQuarema</p><p className="mt-2 opacity-80">Cuidando da sua saúde todos os dias.</p></div>
+        <div><p className="text-lg font-extrabold">FarmaQuaresma</p><p className="mt-2 opacity-80">Cuidando da sua saúde todos os dias.</p></div>
         <div><p className="font-semibold">Atendimento</p><p className="mt-2 opacity-80">Seg a sáb, 8h às 22h</p></div>
         <div><p className="font-semibold">Farmacêutico responsável</p><p className="mt-2 opacity-80">Venda de medicamentos controlados somente com receita.</p></div>
       </div>

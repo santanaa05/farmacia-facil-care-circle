@@ -22,10 +22,10 @@ import type { Tables } from "@/integrations/supabase/types";
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Área administrativa — FarmaQuarema" },
-      { name: "description", content: "Área restrita para gerenciar produtos, cupons e usuários da FarmaQuarema." },
-      { property: "og:title", content: "Área administrativa — FarmaQuarema" },
-      { property: "og:description", content: "Área restrita da FarmaQuarema." },
+      { title: "Área administrativa — FarmaQuaresma" },
+      { name: "description", content: "Área restrita para gerenciar produtos, cupons e usuários da FarmaQuaresma." },
+      { property: "og:title", content: "Área administrativa — FarmaQuaresma" },
+      { property: "og:description", content: "Área restrita da FarmaQuaresma." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
@@ -161,7 +161,7 @@ function Admin() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <WorkspaceHeader icon={ShieldCheck} eyebrow="Área do administrador" title="Gestão da FarmaQuarema" description="Administre o catálogo, os perfis de acesso e os cupons da loja." />
+      <WorkspaceHeader icon={ShieldCheck} eyebrow="Área do administrador" title="Gestão da FarmaQuaresma" description="Administre o catálogo, os perfis de acesso e os cupons da loja." />
       <Tabs defaultValue="produtos" className="mt-6">
         <TabsList className={`${workspaceTabsList} grid-cols-3`}>
           <TabsTrigger value="produtos" className={workspaceTabTrigger}><Package className="h-4 w-4" />Produtos</TabsTrigger>

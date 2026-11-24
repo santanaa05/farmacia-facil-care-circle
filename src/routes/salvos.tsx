@@ -11,10 +11,10 @@ import { useAuth } from "@/lib/auth";
 export const Route = createFileRoute("/salvos")({
   head: () => ({
     meta: [
-      { title: "Produtos salvos — FarmaQuarema" },
-      { name: "description", content: "Os produtos que você guardou para comprar depois na FarmaQuarema." },
-      { property: "og:title", content: "Produtos salvos — FarmaQuarema" },
-      { property: "og:description", content: "Sua lista de favoritos na FarmaQuarema." },
+      { title: "Produtos salvos — FarmaQuaresma" },
+      { name: "description", content: "Os produtos que você guardou para comprar depois na FarmaQuaresma." },
+      { property: "og:title", content: "Produtos salvos — FarmaQuaresma" },
+      { property: "og:description", content: "Sua lista de favoritos na FarmaQuaresma." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

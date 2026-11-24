@@ -12,9 +12,9 @@ import type { Tables } from "@/integrations/supabase/types";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "FarmaQuarema — Farmácia online com ofertas" },
-      { name: "description", content: "Compre remédios, vitaminas e produtos de higiene na FarmaQuarema com descontos e entrega rápida." },
-      { property: "og:title", content: "FarmaQuarema — Farmácia online com ofertas" },
+      { title: "FarmaQuaresma — Farmácia online com ofertas" },
+      { name: "description", content: "Compre remédios, vitaminas e produtos de higiene na FarmaQuaresma com descontos e entrega rápida." },
+      { property: "og:title", content: "FarmaQuaresma — Farmácia online com ofertas" },
       { property: "og:description", content: "Remédios, vitaminas e higiene com descontos e entrega rápida." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

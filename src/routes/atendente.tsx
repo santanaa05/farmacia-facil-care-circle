@@ -16,9 +16,9 @@ import { STATUS, productsQuery } from "@/lib/products";
 export const Route = createFileRoute("/atendente")({
   head: () => ({
     meta: [
-      { title: "Painel do Atendente — FarmaQuarema" },
+      { title: "Painel do Atendente — FarmaQuaresma" },
       { name: "description", content: "Gerencie pedidos e consulte estoque." },
-      { property: "og:title", content: "Painel do Atendente — FarmaQuarema" },
+      { property: "og:title", content: "Painel do Atendente — FarmaQuaresma" },
       { property: "og:description", content: "Pedidos e estoque." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

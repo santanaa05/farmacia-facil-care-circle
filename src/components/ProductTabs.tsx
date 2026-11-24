@@ -35,7 +35,7 @@ export function ProductTabs({ products }: { products: Product[] }) {
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Escolhas para você</p>
-          <h2 id="product-highlights" className="mt-1 text-2xl font-extrabold md:text-3xl">Destaques da FarmaQuarema</h2>
+          <h2 id="product-highlights" className="mt-1 text-2xl font-extrabold md:text-3xl">Destaques da FarmaQuaresma</h2>
         </div>
         <div className="flex gap-2">
           <Button type="button" variant="outline" size="icon" aria-label="Ver produtos anteriores" onClick={() => move(-1)} className="rounded-full">

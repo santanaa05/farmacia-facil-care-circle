@@ -9,9 +9,9 @@ import { brl } from "@/lib/cart";
 export const Route = createFileRoute("/cupons")({
   head: () => ({
     meta: [
-      { title: "Cupons de desconto — FarmaQuarema" },
-      { name: "description", content: "Cupons ativos da FarmaQuarema: copie o código e use no carrinho." },
-      { property: "og:title", content: "Cupons de desconto — FarmaQuarema" },
+      { title: "Cupons de desconto — FarmaQuaresma" },
+      { name: "description", content: "Cupons ativos da FarmaQuaresma: copie o código e use no carrinho." },
+      { property: "og:title", content: "Cupons de desconto — FarmaQuaresma" },
       { property: "og:description", content: "Copie um código de desconto e use na sua compra." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

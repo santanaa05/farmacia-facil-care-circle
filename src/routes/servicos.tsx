@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/servicos")({
   head: () => ({
     meta: [
-      { title: "Serviços e vacinas — FarmaQuarema" },
-      { name: "description", content: "Vacinas, aferição de pressão, entrega rápida e retirada na loja na FarmaQuarema." },
-      { property: "og:title", content: "Serviços e vacinas — FarmaQuarema" },
-      { property: "og:description", content: "Serviços de saúde, entrega e retirada na FarmaQuarema." },
+      { title: "Serviços e vacinas — FarmaQuaresma" },
+      { name: "description", content: "Vacinas, aferição de pressão, entrega rápida e retirada na loja na FarmaQuaresma." },
+      { property: "og:title", content: "Serviços e vacinas — FarmaQuaresma" },
+      { property: "og:description", content: "Serviços de saúde, entrega e retirada na FarmaQuaresma." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

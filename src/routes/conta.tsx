@@ -16,9 +16,9 @@ import { productsQuery } from "@/lib/products";
 export const Route = createFileRoute("/conta")({
   head: () => ({
     meta: [
-      { title: "Minha conta — FarmaQuarema" },
-      { name: "description", content: "Acompanhe seus pedidos na FarmaQuarema." },
-      { property: "og:title", content: "Minha conta — FarmaQuarema" },
+      { title: "Minha conta — FarmaQuaresma" },
+      { name: "description", content: "Acompanhe seus pedidos na FarmaQuaresma." },
+      { property: "og:title", content: "Minha conta — FarmaQuaresma" },
       { property: "og:description", content: "Seus pedidos e dados." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
