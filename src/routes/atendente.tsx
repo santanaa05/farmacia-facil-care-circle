@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ClipboardList, Headset, PackageSearch } from "lucide-react";
+import { ClipboardList, Headset, Lock, PackageSearch } from "lucide-react";
+import { RestrictedArea } from "@/components/RestrictedArea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { RoleGuard } from "@/components/RoleGuard";
@@ -69,10 +70,13 @@ function Atendente() {
       </div>
 
       <Tabs defaultValue="pedidos" className="mt-6">
-        <TabsList className={`${workspaceTabsList} max-w-xl grid-cols-2`}>
+        <TabsList className={`${workspaceTabsList} max-w-2xl grid-cols-3`}>
           <TabsTrigger value="pedidos" className={workspaceTabTrigger}><ClipboardList className="h-4 w-4" />Pedidos</TabsTrigger>
           <TabsTrigger value="estoque" className={workspaceTabTrigger}><PackageSearch className="h-4 w-4" />Consulta de estoque</TabsTrigger>
+          <TabsTrigger value="restrito" className={workspaceTabTrigger}><Lock className="h-4 w-4" />Área restrita</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="restrito" className="mt-6"><RestrictedArea /></TabsContent>
 
         <TabsContent value="pedidos" className="mt-6">
           <div className="flex items-center justify-between gap-3">

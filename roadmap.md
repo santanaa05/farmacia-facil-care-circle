@@ -15,3 +15,6 @@
 - [ ] Refazer atalhos rápidos e deixar as categorias compactas
 - [ ] Adicionar seleção de CEP com cidade e prazo estimado
 - [ ] Separar os acessos de Cliente e Atendente na página Entrar
+- [x] Planilhas de estoque: cancelado a pedido (consulta simples mantida)
+- [x] Aba restrita no Atendente com login (só Admin) para IA e funções de ADM
+- [ ] Mini chat no canto esquerdo ligado a um webhook (aguardando link)
