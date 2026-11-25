@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { AuthProvider } from "@/lib/auth";
 import { CartProvider } from "@/lib/cart";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { CustomerChat } from "@/components/CustomerChat";
 import { Toaster } from "@/components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -134,6 +135,7 @@ function RootComponent() {
           <SiteHeader />
           <main className="min-h-[60vh]"><Outlet /></main>
           <SiteFooter />
+          <CustomerChat />
           <Toaster richColors />
         </CartProvider>
       </AuthProvider>

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Package, Pencil, Plus, ShieldCheck, Ticket, Trash2, Users } from "lucide-react";
+import { BrainCircuit, Package, Pencil, Plus, ShieldCheck, Ticket, Trash2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { StockAnalysis } from "@/components/StockAnalysis";
 import { RoleGuard } from "@/components/RoleGuard";
 import { WorkspaceHeader, workspaceTabTrigger, workspaceTabsList } from "@/components/Workspace";
 import { brl } from "@/lib/cart";
@@ -162,12 +163,15 @@ function Admin() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <WorkspaceHeader icon={ShieldCheck} eyebrow="Área do administrador" title="Gestão da FarmaQuaresma" description="Administre o catálogo, os perfis de acesso e os cupons da loja." />
-      <Tabs defaultValue="produtos" className="mt-6">
-        <TabsList className={`${workspaceTabsList} grid-cols-3`}>
+      <Tabs defaultValue="estoque-ia" className="mt-6">
+        <TabsList className={`${workspaceTabsList} grid-cols-4`}>
+          <TabsTrigger value="estoque-ia" className={workspaceTabTrigger}><BrainCircuit className="h-4 w-4" />Análise de estoque</TabsTrigger>
           <TabsTrigger value="produtos" className={workspaceTabTrigger}><Package className="h-4 w-4" />Produtos</TabsTrigger>
           <TabsTrigger value="usuarios" className={workspaceTabTrigger}><Users className="h-4 w-4" />Usuários</TabsTrigger>
           <TabsTrigger value="cupons" className={workspaceTabTrigger}><Ticket className="h-4 w-4" />Cupons</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="estoque-ia" className="mt-6"><StockAnalysis /></TabsContent>
 
         <TabsContent value="produtos" className="mt-6">
           <Button onClick={() => { setProd({ ...empty }); setOrigId(null); }}><Plus className="h-4 w-4" />Novo produto</Button>
