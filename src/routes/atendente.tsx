@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ClipboardList, Headset, PackageSearch } from "lucide-react";
+import { ClipboardList, Headset, PackageSearch, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { RoleGuard } from "@/components/RoleGuard";
+import { AdminLogin } from "@/components/AdminLogin";
 import { OrderBadge } from "@/components/OrderBadge";
 import { WorkspaceHeader, workspaceTabTrigger, workspaceTabsList } from "@/components/Workspace";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -69,9 +70,10 @@ function Atendente() {
       </div>
 
       <Tabs defaultValue="pedidos" className="mt-6">
-        <TabsList className={`${workspaceTabsList} max-w-xl grid-cols-2`}>
+        <TabsList className={`${workspaceTabsList} max-w-2xl grid-cols-2 sm:grid-cols-3`}>
           <TabsTrigger value="pedidos" className={workspaceTabTrigger}><ClipboardList className="h-4 w-4" />Pedidos</TabsTrigger>
           <TabsTrigger value="estoque" className={workspaceTabTrigger}><PackageSearch className="h-4 w-4" />Consulta de estoque</TabsTrigger>
+          <TabsTrigger value="admin" className={`${workspaceTabTrigger} col-span-2 sm:col-span-1`}><ShieldCheck className="h-4 w-4" />Admin</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pedidos" className="mt-6">
@@ -117,6 +119,7 @@ function Atendente() {
             ))}
           </ul>
         </TabsContent>
+        <TabsContent value="admin" className="mt-6"><AdminLogin /></TabsContent>
       </Tabs>
     </div>
   );

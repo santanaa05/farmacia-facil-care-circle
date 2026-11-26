@@ -17,4 +17,5 @@
 - [ ] Separar os acessos de Cliente e Atendente na página Entrar
 - [x] Planilhas de estoque: cancelado a pedido (consulta simples mantida)
 - [x] Aba restrita no Atendente com login (só Admin) para IA e funções de ADM
+- [x] Restaurar aba Admin no painel do Atendente com login dedicado e verificação do papel de administrador
 - [ ] Mini chat no canto esquerdo ligado a um webhook (aguardando link)

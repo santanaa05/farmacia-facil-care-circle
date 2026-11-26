@@ -32,3 +32,4 @@ use the editor.
 ## Project rules
 - Roles live in `public.user_roles` (enum cliente/atendente/admin), checked via `has_role`/`is_staff` in RLS; the first signup becomes admin. Why: avoids privilege escalation.
 - Orders are created only through the `place_order` RPC, which reads prices and stock server-side. Why: clients cannot set prices.
+- Admin login in the attendant workspace verifies credentials and `has_role` in an isolated in-memory session before replacing the active session and clearing cached data. Why: denied attempts preserve attendant access and never grant admin privileges.
